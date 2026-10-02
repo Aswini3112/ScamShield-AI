@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Navbar } from '@/components/Navbar'
+import { ColdStartBanner } from '@/components/ColdStartBanner'
 import { LandingPage } from '@/pages/LandingPage'
 import { AnalyzePage } from '@/pages/AnalyzePage'
 import { ResultPage } from '@/pages/ResultPage'
@@ -13,6 +14,7 @@ export default function App() {
     <BrowserRouter>
       <div className="min-h-screen bg-background cyber-grid-bg">
         <Navbar />
+        <ColdStartBanner />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/analyze" element={<AnalyzePage />} />

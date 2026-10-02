@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: scamshield-ai-backend
+    runtime: python
+    # Build runs from repo root so we can access both backend/ and ml/
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+      # ml/models/ is at /opt/render/project/src/ml/models on Render
+      - key: MODEL_DIR
+        value: /opt/render/project/src/ml/models
+      # DATABASE_URL uses the persistent disk mount path
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:////opt/render/project/data/scamshield.db
+      - key: MAX_UPLOAD_MB
+        value: "10"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "30"
+      # ↓ Set this to your Vercel frontend URL after deploying
+      # e.g. https://scamshield-ai.vercel.app
+      - key: ALLOWED_ORIGINS
+        value: "*"
+      # Optional AI keys — leave blank to use rule-based fallback
+      - key: GEMINI_API_KEY
+        value: ""
+      - key: OPENAI_API_KEY
+        value: ""
+    disk:
+      name: scamshield-data
+      mountPath: /opt/render/project/data
+      sizeGB: 1

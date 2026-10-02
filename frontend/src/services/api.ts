@@ -8,9 +8,15 @@ import type {
   InteractionType,
 } from '@/types'
 
+// In production (Vercel), VITE_API_URL is set to the Render backend URL.
+// In local dev, Vite proxy handles /api → localhost:8000 so we use '/api'.
+const BASE_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api'
+
 const api = axios.create({
-  baseURL: '/api',
-  timeout: 30000,
+  baseURL: BASE_URL,
+  timeout: 60000,  // 60s — Render free tier cold starts can be slow
   headers: { 'Content-Type': 'application/json' },
 })
 

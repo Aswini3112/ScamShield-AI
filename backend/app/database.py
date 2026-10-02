@@ -1,6 +1,9 @@
 """SQLAlchemy async database setup — SQLite locally, swappable to PostgreSQL."""
 from __future__ import annotations
 
+import os
+from pathlib import Path
+
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
@@ -8,10 +11,30 @@ from app.config import get_settings
 
 settings = get_settings()
 
+
+def _resolve_db_url() -> str:
+    """
+    Resolve the database URL.
+    - On Render with a persistent disk, DATABASE_URL points to /opt/render/project/data/
+    - Locally it defaults to ./scamshield.db
+    - Ensures the parent directory exists before SQLite tries to create the file.
+    """
+    url = settings.database_url
+    if url.startswith("sqlite"):
+        # Extract the file path from sqlite+aiosqlite:///path or sqlite:///path
+        raw = url.split("///", 1)[-1]
+        if raw and raw != ":memory:":
+            db_path = Path(raw)
+            db_path.parent.mkdir(parents=True, exist_ok=True)
+    return url
+
+
+_db_url = _resolve_db_url()
+
 engine = create_async_engine(
-    settings.database_url,
+    _db_url,
     echo=settings.debug,
-    connect_args={"check_same_thread": False} if "sqlite" in settings.database_url else {},
+    connect_args={"check_same_thread": False} if "sqlite" in _db_url else {},
 )
 
 AsyncSessionLocal = async_sessionmaker(

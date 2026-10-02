@@ -52,6 +52,14 @@ class ScamPredictor:
         vec_path = model_dir / "vectorizer.joblib"
         meta_path = model_dir / "feature_names.joblib"
 
+        # Also try path relative to this file (works when running from backend/)
+        if not model_path.exists():
+            alt = Path(__file__).parent.parent.parent.parent / "ml" / "models" / "model.joblib"
+            if alt.exists():
+                model_path = alt
+                vec_path = alt.parent / "vectorizer.joblib"
+                meta_path = alt.parent / "feature_names.joblib"
+
         if not model_path.exists():
             logger.warning(
                 "ML model not found at %s. Rule-based fallback will be used. "

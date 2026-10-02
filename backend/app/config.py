@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     # Server
     app_env: str = "development"
     debug: bool = True
+    # Comma-separated list — add your Vercel URL here after deploying frontend
+    # e.g. "https://scamshield-ai.vercel.app,http://localhost:5173"
     allowed_origins: str = "http://localhost:5173,http://localhost:3000"
 
     # Database
@@ -41,7 +43,13 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins(self) -> list[str]:
-        return [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
+        origins = [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
+        # In production, always add a wildcard fallback so the API works
+        # even before the exact Vercel URL is configured.
+        # Once you set ALLOWED_ORIGINS to your real Vercel URL, remove "*".
+        if self.app_env == "production" and "*" not in origins:
+            origins.append("*")
+        return origins
 
     @property
     def max_upload_bytes(self) -> int:

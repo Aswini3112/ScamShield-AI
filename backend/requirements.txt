@@ -7,21 +7,22 @@ aiosqlite==0.20.0
 python-multipart==0.0.9
 python-dotenv==1.0.1
 httpx==0.27.0
+slowapi==0.1.9
 
-# ML
+# ML — core (required)
 scikit-learn==1.4.2
 numpy==1.26.4
 pandas==2.2.2
 joblib==1.4.2
 xgboost==2.0.3
 
-# Image / OCR  (optional – gracefully degraded if absent)
-opencv-python-headless==4.9.0.80
-pytesseract==0.3.10
+# Image processing (required for file upload handling)
 Pillow==10.3.0
 
-# PDF extraction
+# PDF extraction (optional — gracefully degraded if absent)
 PyMuPDF==1.24.3
 
-# Utilities
-slowapi==0.1.9
+# Image / OCR — optional, requires Tesseract binary installed separately
+# Uncomment these if deploying with a custom Docker image that has Tesseract:
+# opencv-python-headless==4.9.0.80
+# pytesseract==0.3.10
