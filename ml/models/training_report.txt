@@ -1,0 +1,46 @@
+BEST MODEL: RandomForest  Macro-F1=0.9413
+
+==================================================
+Model: LogisticRegression
+Accuracy: 0.9474   Macro-F1: 0.8961   Time: 0.4s
+              precision    recall  f1-score   support
+
+        SAFE       1.00      1.00      1.00        13
+  SUSPICIOUS       0.67      0.80      0.73         5
+        SCAM       0.97      0.95      0.96        39
+
+    accuracy                           0.95        57
+   macro avg       0.88      0.92      0.90        57
+weighted avg       0.95      0.95      0.95        57
+
+Confusion Matrix: [[13, 0, 0], [0, 4, 1], [0, 2, 37]]
+==================================================
+Model: RandomForest
+Accuracy: 0.9649   Macro-F1: 0.9413   Time: 0.4s
+              precision    recall  f1-score   support
+
+        SAFE       1.00      0.92      0.96        13
+  SUSPICIOUS       1.00      0.80      0.89         5
+        SCAM       0.95      1.00      0.97        39
+
+    accuracy                           0.96        57
+   macro avg       0.98      0.91      0.94        57
+weighted avg       0.97      0.96      0.96        57
+
+Confusion Matrix: [[12, 0, 1], [0, 4, 1], [0, 0, 39]]
+==================================================
+Model: XGBoost
+Accuracy: 0.9298   Macro-F1: 0.9088   Time: 0.4s
+              precision    recall  f1-score   support
+
+        SAFE       0.86      0.92      0.89        13
+  SUSPICIOUS       1.00      0.80      0.89         5
+        SCAM       0.95      0.95      0.95        39
+
+    accuracy                           0.93        57
+   macro avg       0.94      0.89      0.91        57
+weighted avg       0.93      0.93      0.93        57
+
+Confusion Matrix: [[12, 0, 1], [0, 4, 1], [2, 0, 37]]
+
+Trained on SYNTHETIC data generated for demo purposes. Metrics reflect performance on synthetic test set only — NOT real-world scam detection effectiveness.

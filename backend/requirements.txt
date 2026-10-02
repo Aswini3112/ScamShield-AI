@@ -1,0 +1,27 @@
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+pydantic-settings==2.2.1
+sqlalchemy==2.0.30
+aiosqlite==0.20.0
+python-multipart==0.0.9
+python-dotenv==1.0.1
+httpx==0.27.0
+
+# ML
+scikit-learn==1.4.2
+numpy==1.26.4
+pandas==2.2.2
+joblib==1.4.2
+xgboost==2.0.3
+
+# Image / OCR  (optional – gracefully degraded if absent)
+opencv-python-headless==4.9.0.80
+pytesseract==0.3.10
+Pillow==10.3.0
+
+# PDF extraction
+PyMuPDF==1.24.3
+
+# Utilities
+slowapi==0.1.9

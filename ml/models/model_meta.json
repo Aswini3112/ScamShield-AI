@@ -1,0 +1,11 @@
+{
+  "best_model": "RandomForest",
+  "macro_f1": 0.9413,
+  "accuracy": 0.9649,
+  "label_names": [
+    "SAFE",
+    "SUSPICIOUS",
+    "SCAM"
+  ],
+  "data_note": "Trained on SYNTHETIC data generated for demo purposes. Metrics reflect performance on synthetic test set only \u2014 NOT real-world scam detection effectiveness."
+}

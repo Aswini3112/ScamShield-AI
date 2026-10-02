@@ -1,0 +1,54 @@
+version: "3.9"
+
+# ScamShield AI — Docker Compose for local development
+# Usage:
+#   docker-compose up --build
+#
+# Services:
+#   backend   : FastAPI at http://localhost:8000
+#   frontend  : React (Vite) at http://localhost:5173
+#
+# Note: OCR (pytesseract) requires Tesseract binary in the image.
+#       The backend Dockerfile installs it via apt.
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: scamshield-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./ml/models:/app/../ml/models:ro
+      - ./uploads:/app/uploads
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./scamshield.db
+      - APP_ENV=development
+      - DEBUG=true
+      - ALLOWED_ORIGINS=http://localhost:5173
+      - MODEL_DIR=/app/../ml/models
+      - MAX_UPLOAD_MB=10
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: scamshield-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
